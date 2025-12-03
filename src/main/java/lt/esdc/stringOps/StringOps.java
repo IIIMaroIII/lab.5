@@ -1,6 +1,8 @@
 package lt.esdc.stringOps;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
+
+import java.util.List;
 
 public class StringOps {
     public static void main(String[] args) {
@@ -8,11 +10,12 @@ public class StringOps {
     }
 
      public void init() {
-        randomSentences(10, " | ");
+         determineRepeatableWords();
     }
-    public String randomSentences(int quantity, String delimiter) {
-        Faker faker = new Faker();
-        return faker.name().fullName();
 
-    }
+public void determineRepeatableWords() {
+        String input = "Sun shines bright sun SHINES rain falls Rain falls wind gentle WIND gentle ocean blue Ocean blue Earth";
+        String[] arr = input.split("\s+");
+    System.out.println(arr.toString());
+}
 }
