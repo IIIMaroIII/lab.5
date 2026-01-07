@@ -163,4 +163,9 @@ public class StringOps {
         System.out.format(BLUE + "✅ We have found the longest palindrome %s which is %s chars long", GREEN + longestPalindrome + BLUE, GREEN + longestPalindrome.length() + BLUE);
 
     }
+
+    public void specificPhoneNumberFormat() {
+        // +7 999 123-45-67
+        // 8(999)123-45-67
+    }
 }
