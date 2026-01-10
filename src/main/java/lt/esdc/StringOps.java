@@ -16,16 +16,16 @@ public class StringOps {
     }
 
     public void init() {
-//        findEvenRepeatableWords(); //✅
-//        upperFirstLetterOfEachSentence(); //✅
-//        countAndSortWordsByTotalOccurrences(); //✅
-//        palindromeSubstr(); ✅
-//        specificPhoneNumberFormat(); ✅
+//        findEvenRepeatableWords();
+//        upperFirstLetterOfEachSentence();
+//        countAndSortWordsByTotalOccurrences();
+//        palindromeSubstr();
+//        specificPhoneNumberFormat();
 //        checkAllWordsStartWithCapitalLetter();
     }
 
     public void findEvenRepeatableWords() {
-        String input = "Sun Sun Sun Sun shines shines sun bright bright ".trim();
+        String input = "Sun Sun Sun Sun shines shines sun bright bright ".strip();
         String[] arr = input.toLowerCase().split("\\W+");
         System.out.println(BLUE + "Original sentence: " + input);
 
@@ -169,8 +169,6 @@ public class StringOps {
     }
 
     public void specificPhoneNumberFormat() {
-        // +7 999 123-45-67
-        // 8(999)123-45-67
         System.out.println(BLUE + "The required pattern either +7 999 123-45-67 or 8(999)123-45-67");
         Scanner scanner = new Scanner(System.in);
         System.out.println(GREEN + "Enter the phone number: ");
@@ -197,11 +195,8 @@ public class StringOps {
 
                 for (String word : words) {
                     String rgx = "^[A-Z].*$";
-
                     boolean isTheFirstCapitalChar = word.matches(rgx);
-
                     if (!isTheFirstCapitalChar) continue;
-
                     System.out.println(GREEN + "A word is: " + BLUE + word);
                 }
 
