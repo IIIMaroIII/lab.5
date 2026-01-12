@@ -153,8 +153,6 @@ public class StringOps {
                 palindromeStr.append(currentWord).append(",");
             }
         }
-        System.out.println("✅ Palindrome String is blank: " + palindromeStr.toString().isBlank());
-        System.out.println("✅ Palindrome String: " + palindromeStr.toString());
         // Find the longest one
         String[] palindromeArr = palindromeStr.toString().strip().split("\\W+");
 
@@ -164,7 +162,6 @@ public class StringOps {
         Comparator<String> comparator = Comparator.comparing(String::length).reversed();
         Arrays.sort(palindromeArr, comparator);
         String longestPalindrome = palindromeArr[0];
-        printStringArr(palindromeArr);
         System.out.println("🔥 The longest palindrome: " + longestPalindrome);
         return longestPalindrome;
     }
