@@ -1,10 +1,7 @@
 package lt.esdc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,10 +34,15 @@ public class StringOps {
 //        System.out.println("✅ The longest palindrome word from the list is: " + result4);
 
 //specificPhoneNumberFormat
-        Scanner scanner = new Scanner(System.in);
-        boolean res = specificPhoneNumberFormat(scanner);
-        System.out.println("🤞Result of specified phone number: " + res);
+//        Scanner scanner = new Scanner(System.in);
+//        boolean res = specificPhoneNumberFormat(scanner.nextLine());
+//        System.out.println("🤞Result of specified phone number: " + res);
 
+//checkAllWordsStartWithCapitalLetter
+        String input5 = "123 Apple _Banana !Cherry dog;";
+        String[] res5 = checkAllWordsStartWithCapitalLetter(input5);
+        printStringArr(res5);
+        System.out.println(Arrays.toString(res5));
     }
 
 
@@ -171,12 +173,10 @@ public class StringOps {
         return longestPalindrome;
     }
 
-    public static boolean specificPhoneNumberFormat(Scanner sc) {
-        if (sc == null) return false;
+    public static boolean specificPhoneNumberFormat(String input) {
+        if (input == null || input.isBlank()) return false;
         System.out.println(BLUE + "The required pattern either +7 999 123-45-67 or 8(999)123-45-67");
-
         System.out.println(GREEN + "Enter the phone number: ");
-        String input = sc.nextLine();
 
         boolean verified = isFitForRegex(input);
 
@@ -189,29 +189,23 @@ public class StringOps {
 
     }
 
-    public static void checkAllWordsStartWithCapitalLetter() {
-        String fileName = "tasks/text.c5.md";
-        File text = new File(fileName);
+    public static String[] checkAllWordsStartWithCapitalLetter(String text) {
+        if (text == null || text.isBlank()) return null;
+        String[] arrOfWords = text.strip().split("[\\W-_]+");
 
-        try (Scanner reader = new Scanner(text)) {
-            while (reader.hasNextLine()) {
-                String line = reader.nextLine();
-                String[] words = line.split("\\W+");
+        StringBuilder strBuilder = new StringBuilder();
 
-                for (String word : words) {
-                    String rgx = "^[A-Z].*$";
-                    boolean isTheFirstCapitalChar = word.matches(rgx);
-                    if (!isTheFirstCapitalChar) continue;
-                    System.out.println(GREEN + "A word is: " + BLUE + word);
-                }
-
+        for (String word : arrOfWords) {
+            if (word.isBlank()) continue;
+            boolean isFirstCapital = word.matches("^[A-Z].*$");
+            if (isFirstCapital) {
+                System.out.println("👉 Word: " + word);
+                strBuilder.append(word).append(",");
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred during reading a file: " + fileName);
-            e.printStackTrace();
         }
+        if (strBuilder.toString().isBlank()) return null;
 
-
+        return strBuilder.toString().split(",");
     }
 
     public static boolean isFitForRegex(String str) {

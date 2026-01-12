@@ -5,8 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestReporter;
 
-import java.util.Scanner;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class StringOpsTest {
@@ -18,11 +16,8 @@ class StringOpsTest {
         // Act
         String phone1 = "+7 999 123-45-67";
 
-
         // Assert
         assertTrue(StringOps.isFitForRegex(phone1));
-
-
     }
 
     @Test
@@ -414,10 +409,223 @@ class StringOpsTest {
     @Test
     void specificPhoneNumberFormat_ifScannerIsNull_returnsFalse() {
         //Arrange
-        Scanner scanner = null;
         //Act
-        boolean actual = StringOps.specificPhoneNumberFormat(scanner);
+        String string = null;
+        boolean actual = StringOps.specificPhoneNumberFormat(string);
         //Assert
         assertFalse(actual);
     }
+
+    // +7 999 123-45-67
+    // 8(999)123-45-67
+    @Test
+    void specificPhoneNumberFormat_returnsFalse_ifInputIsNull() {
+        //Arrange
+        String string = null;
+        //Act
+        boolean actual = StringOps.specificPhoneNumberFormat(string);
+        //Assert
+        assertFalse(actual);
+    }
+
+    @Test
+    void specificPhoneNumberFormat_returnsFalse_ifInputIsEmpty() {
+        //Arrange
+        String string = "";
+        //Act
+        boolean actual = StringOps.specificPhoneNumberFormat(string);
+        //Assert
+        assertFalse(actual);
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_withoutPlusPrefixSun() {
+        // Arrange
+        // Act
+        String withoutPlus = "7 999 123-45-67";
+
+        // Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(withoutPlus));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_wrongCountryCodeSun() {
+        //Arrange
+        String wrongCountryCode = "+8 999 123-45-67";
+        //Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(wrongCountryCode));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_missingSpaceAfterPlus7Sun() {
+        //Arrange
+        String missingSpace = "+7999 123-45-67";
+        //Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(missingSpace));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_missingSpaceBetweenGroupsSun() {
+        //Arrange
+        String missingSpaceBetweenGroups = "+7 999123-45-67";
+        //Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(missingSpaceBetweenGroups));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_spacesInsteadOfHyphensSun() {
+        //Arrange
+        String spacesInsteadOfHyphens = "+7 999 123 45 67";
+        //Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(spacesInsteadOfHyphens));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_tooFewDigitsInAreaCode_plus7Sun() {
+        //Arrange
+        String tooFewDigits = "+7 99 123-45-67";
+        //Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(tooFewDigits));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_tooManyDigitsInAreaCode_plus7Sun() {
+        //Arrange
+        String tooManyDigits = "+7 9999 123-45-67";
+        //Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(tooManyDigits));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnFalse_forInvalidPhoneNumber_missingParentheses_in8FormatSun() {
+        //Arrange
+        String missingParentheses = "8 999 123-45-67";
+        //Assert
+        assertFalse(StringOps.specificPhoneNumberFormat(missingParentheses));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnTrue_forValidPhoneNumbers_1Sun() {
+        // Arrange
+        // Act
+        String phone1 = "+7 999 123-45-67";
+
+        // Assert
+        assertTrue(StringOps.specificPhoneNumberFormat(phone1));
+    }
+
+    @Test
+    void specificPhoneNumberFormat_shouldReturnTrue_forValidPhoneNumbers_2Sun() {
+        // Arrange
+        // Act
+        String phone2 = "8(999)123-45-67";
+
+        // Assert
+        assertTrue(StringOps.specificPhoneNumberFormat(phone2));
+    }
+
+    @Test
+    void checkAllWordsStartWithCapitalLetter_returnsNull_ifTextIsNull() {
+        // Arrange
+        String text = null;
+
+        // Act
+        String[] actual = StringOps.checkAllWordsStartWithCapitalLetter(text);
+
+        // Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void checkAllWordsStartWithCapitalLetter_returnsNull_ifTextIsEmpty() {
+        // Arrange
+        String text = "";
+
+        // Act
+        String[] actual = StringOps.checkAllWordsStartWithCapitalLetter(text);
+
+        // Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void checkAllWordsStartWithCapitalLetter_returnsNull_ifNoCapitalizedWordsFound() {
+        // Arrange
+        String text = "this is a simple sentence with no capital words";
+
+        // Act
+        String[] actual = StringOps.checkAllWordsStartWithCapitalLetter(text);
+
+        // Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void checkAllWordsStartWithCapitalLetter_returnsSingleWord_ifOnlyOneCapitalizedWordExists() {
+        // Arrange
+        String text = "this sentence contains Java only";
+        String[] expected = {"Java"};
+
+        // Act
+        String[] actual = StringOps.checkAllWordsStartWithCapitalLetter(text);
+
+        // Assert
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void checkAllWordsStartWithCapitalLetter_returnsAllCapitalizedWords_ifMultipleExist() {
+        // Arrange
+        String text = "Alice met Bob in New York near Central Park";
+        String[] expected = {
+                "Alice",
+                "Bob",
+                "New",
+                "York",
+                "Central",
+                "Park"
+        };
+
+        // Act
+        String[] actual = StringOps.checkAllWordsStartWithCapitalLetter(text);
+
+        // Assert
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void checkAllWordsStartWithCapitalLetter_ignoresWordsStartingWithNonLetters() {
+        // Arrange
+        String text = "123 Apple _Banana !Cherry dog";
+        String[] expected = {
+                "Apple",
+                "Banana",
+                "Cherry"
+        };
+
+        // Act
+        String[] actual = StringOps.checkAllWordsStartWithCapitalLetter(text);
+
+        // Assert
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void checkAllWordsStartWithCapitalLetter_keepsDuplicates_ifTheyAppearMultipleTimes() {
+        // Arrange
+        String text = "Alice Alice Bob Bob";
+        String[] expected = {
+                "Alice",
+                "Alice",
+                "Bob",
+                "Bob"
+        };
+
+        // Act
+        String[] actual = StringOps.checkAllWordsStartWithCapitalLetter(text);
+
+        // Assert
+        assertArrayEquals(expected, actual);
+    }
+
 }
