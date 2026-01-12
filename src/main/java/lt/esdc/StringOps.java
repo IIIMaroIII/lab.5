@@ -26,10 +26,15 @@ public class StringOps {
 //        System.out.println("👉 Result of upperFirstLetterOfEachSentence: " + GREEN + "✅ " + result2 + " ✅" + RESET);
 
         //countAndSortWordsByTotalOccurrences
-        String text3 = "The sun sun sun sun sun sun sun shines brightly over over over the the the city, houses and people, and the sun rises above the buildings as well as. ";
-        String listOfWords = " sun !! the";
-        String[] result3 = countAndSortWordsByTotalOccurrences(text3, listOfWords);
-        printStringArr(result3);
+//        String text3 = " . . . ; the the  sun    the brightly shines shines shines shines shines city over over, houses and people, and rises above buildings as well as. ";
+//        String listOfWords = " sun  the shines over";
+//        String[] result3 = countAndSortWordsByTotalOccurrences(text3, listOfWords);
+//        printStringArr(result3);
+
+        //palindromeSubstr
+        String text4 = "In the i eye racecar radar civic notes I found , then , and finally written in bold, .";
+        String result4 = palindromeSubstr(text4);
+        System.out.println("✅ The longest palindrome word from the list is: " + result4);
 
     }
 
@@ -87,7 +92,7 @@ public class StringOps {
     }
 
     public static String[] countAndSortWordsByTotalOccurrences(String str, String list) {
-        if (str == null || list == null || str.isBlank() || list.isBlank()) return new String[0];
+        if (str == null || list == null || str.isBlank() || list.isBlank()) return null;
 
         System.out.println(BLUE + "Original text: " + GREEN + str.strip());
         System.out.println(BLUE + "List of words: " + GREEN + list.strip() + RESET);
@@ -131,48 +136,37 @@ public class StringOps {
     }
 
 
-    public static void printStringArr(String[] arr) {
-        if (arr.length == 0) return;
-        for (String one : arr) {
-            System.out.println("📣 one in many: " + one);
-        }
+    public static String palindromeSubstr(String text) {
+        if (text == null || text.isBlank()) return null;
+        System.out.println(BLUE + "Original text: " + GREEN + text);
+        String[] arrOfWords = text.toLowerCase().strip().split("\\W+");
 
-    }
+        //Find all palindromes
+        StringBuilder palindromeStr = new StringBuilder();
 
-    public static void palindromeSubstr() {
-        String input = "In the level notes I found eye, then level, and finally racecar written in bold, eye.";
-        System.out.println(BLUE + "Original text: " + GREEN + input);
-        String[] arrOfWords = input.toLowerCase().trim().split("\\W+");
-
-        int palindromeCounter = 0;
-        String tmp = "";
-
-        for (String word : arrOfWords) {
-            int wordLength = word.length();
-            int counter = 0;
-
-            for (int i = 0; i < wordLength; i++) {
-                char prevSymbol = word.charAt(i);
-                char nextSymbol = word.charAt(wordLength - i - 1);
-                if (prevSymbol == nextSymbol) counter++;
-
-                // If the word is palindrome;
-                if (counter == wordLength && counter > 1) {
-                    tmp += word + ",";
-                }
-
-
+        for (int i = 0; i < arrOfWords.length; i++) {
+            String currentWord = arrOfWords[i];
+            if (currentWord.isBlank()) continue;
+            char firstChar = currentWord.charAt(0);
+            char lastChar = currentWord.charAt(currentWord.length() - 1);
+            if (firstChar == lastChar && currentWord.length() > 1) {
+                palindromeStr.append(currentWord).append(",");
             }
         }
-        String[] result = tmp.split("\\W+");
-        Arrays.sort(result);
-        System.out.println(RED + "Sorted array of palindromes: " + Arrays.toString(result) + RESET);
-        if (result.length == 0) {
-            System.out.println(RED + "❌ We have found none of palindrome in the given text" + RESET);
-        }
-        String longestPalindrome = result[result.length - 1];
-        System.out.format(BLUE + "✅ We have found the longest palindrome %s which is %s chars long", GREEN + longestPalindrome + BLUE, GREEN + longestPalindrome.length() + BLUE);
+        System.out.println("✅ Palindrome String is blank: " + palindromeStr.toString().isBlank());
+        System.out.println("✅ Palindrome String: " + palindromeStr.toString());
+        // Find the longest one
+        String[] palindromeArr = palindromeStr.toString().strip().split("\\W+");
 
+        // If any of words is palindrome were found return -> null
+        if (palindromeArr[0].isBlank()) return null;
+
+        Comparator<String> comparator = Comparator.comparing(String::length).reversed();
+        Arrays.sort(palindromeArr, comparator);
+        String longestPalindrome = palindromeArr[0];
+        printStringArr(palindromeArr);
+        System.out.println("🔥 The longest palindrome: " + longestPalindrome);
+        return longestPalindrome;
     }
 
     public static void specificPhoneNumberFormat() {
@@ -221,5 +215,12 @@ public class StringOps {
         boolean isRegexOk = str.matches(regex);
         if (isRegexOk) return true;
         return false;
+    }
+
+    public static void printStringArr(String[] arr) {
+        for (String one : arr) {
+            System.out.println("📣 one in many: " + one);
+        }
+
     }
 }

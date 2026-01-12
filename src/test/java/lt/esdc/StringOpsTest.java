@@ -1,7 +1,9 @@
 package lt.esdc;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestReporter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -257,4 +259,152 @@ class StringOpsTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void countAndSortWordsByTotalOccurrences_textIsNull() {
+        //Arrange
+        String text = null;
+        String listOfWords = "sun  the shines over";
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, listOfWords);
+        //Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void countAndSortWordsByTotalOccurrences_listIsNull() {
+        //Arrange
+        String text = "sun  the shines over";
+        String listOfWords = null;
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, listOfWords);
+        //Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void countAndSortWordsByTotalOccurrences_listIsEmptyString() {
+        //Arrange
+        String text = "sun  the shines over";
+        String listOfWords = "";
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, listOfWords);
+        //Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void countAndSortWordsByTotalOccurrences_textIsEmptyString() {
+        //Arrange
+        String text = "";
+        String listOfWords = "sun  the shines over";
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, listOfWords);
+        //Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void countAndSortWordsByTotalOccurrences_test1_return_sun8_the6_over3_shines1() {
+        //Arrange
+        String text = "The sun sun sun sun sun sun sun shines brightly over over over the the the city, houses and people, and the sun rises above the buildings as well as. ";
+        String listOfWords = "sun  the shines over";
+        String[] expected = new String[]{"The word <sun> occurred in the given text <8> times", "The word <the> occurred in the given text <6> times", "The word <over> occurred in the given text <3> times", "The word <shines> occurred in the given text <1> times"};
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, listOfWords);
+        //Assert
+        assertArrayEquals(expected, actual);
+
+    }
+
+    @Test
+    void countAndSortWordsByTotalOccurrences_test2_return_sun0_the0_over0_shines0() {
+        //Arrange
+        String text = "brightly city, houses and people, and rises above buildings as well as. ";
+        String listOfWords = "sun  the shines over";
+        String[] expected = new String[]{"The word <sun> occurred in the given text <0> times", "The word <the> occurred in the given text <0> times", "The word <shines> occurred in the given text <0> times", "The word <over> occurred in the given text <0> times"};
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, listOfWords);
+        //Assert
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void countAndSortWordsByTotalOccurrences_textOnlyContainsSeparators_return_sun0_the0_over0_shines0() {
+        //Arrange
+        String text = ";';;!! .. .. ,, ..... ";
+        String list = "sun  the shines over";
+        String[] expected = new String[]{"The word <sun> occurred in the given text <0> times", "The word <the> occurred in the given text <0> times", "The word <shines> occurred in the given text <0> times", "The word <over> occurred in the given text <0> times"};
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, list);
+        //Assert
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void countAndSortWordsByTotalOccurrences_withDifferentCapitalization_return_sun8_the6_over3_shines1() {
+        //Arrange
+        String text = "The sun sUN sun Sun sUn suN SUN ShINes brightly over oVEr oVeR the tHE thE city, houses and people, and the sun rises above the buildings as well as. ";
+        String listOfWords = "sUn  tHe sHINEs oVEr";
+        String[] expected = new String[]{"The word <sun> occurred in the given text <8> times", "The word <the> occurred in the given text <6> times", "The word <over> occurred in the given text <3> times", "The word <shines> occurred in the given text <1> times"};
+        //Act
+        String[] actual = StringOps.countAndSortWordsByTotalOccurrences(text, listOfWords);
+        //Assert
+        assertArrayEquals(expected, actual);
+
+    }
+
+    @Test
+    void palindromeSubstr_ifTextIsNull() {
+        //Arrange
+        String text4 = null;
+        //Act
+        String actual = StringOps.palindromeSubstr(text4);
+        //Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void palindromeSubstr_ifTextIsEmpty() {
+        //Arrange
+        String text4 = "";
+        //Act
+        String actual = StringOps.palindromeSubstr(text4);
+        //Assert
+        assertNull(actual);
+    }
+
+    @Test
+    void palindromeSubstr_noneOfWordsIsPalindrome() {
+        //Arrange
+        String text4 = "In the  notes I found , then , and finally written in bold, .";
+        //Act
+        String actual = StringOps.palindromeSubstr(text4);
+        //Assert
+        assertNull(actual);
+    }
+
+    @Test
+    @DisplayName("Returns 'racecar' cause its the only longest palindrome")
+    void palindromeSubstr_testCase_returns_racecar(TestReporter reporter) {
+        //Arrange
+        String text4 = "In the i eye racecar radar civic notes I found , then , and finally written in bold, .";
+        String expected = "racecar";
+        //Act
+        String actual = StringOps.palindromeSubstr(text4);
+        // Report
+        reporter.publishEntry("Returned value: ", actual);
+        //Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void palindromeSubstr_testCase_radar() {
+        //Arrange
+        String text4 = "In the i eye racecar radar civic notes I found , then , and finally written in bold, .";
+        String expected = "racecar";
+        //Act
+        String actual = StringOps.palindromeSubstr(text4);
+        //Assert
+        assertEquals(expected, actual);
+    }
 }
